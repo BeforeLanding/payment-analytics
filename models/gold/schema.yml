@@ -55,31 +55,36 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['pending', 'success', 'failed', 'refunded']
+              arguments:
+                values: ['pending', 'success', 'failed', 'refunded']
       - name: user_key
         tests:
           - not_null
           - relationships:
-              to: ref('dim_user')
-              field: user_key
+              arguments:
+                to: ref('dim_user')
+                field: user_key
       - name: merchant_key
         tests:
           - not_null
           - relationships:
-              to: ref('dim_merchant')
-              field: merchant_key
+              arguments:
+                to: ref('dim_merchant')
+                field: merchant_key
       - name: date_key
         tests:
           - not_null
           - relationships:
-              to: ref('dim_date')
-              field: date_key
+              arguments:
+                to: ref('dim_date')
+                field: date_key
       - name: currency_key
         tests:
           - not_null
           - relationships:
-              to: ref('dim_currency')
-              field: currency_key
+              arguments:
+                to: ref('dim_currency')
+                field: currency_key
       - name: country_code
         tests: [not_null]
       - name: created_at

@@ -18,7 +18,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['pending', 'success', 'failed', 'refunded']
+              arguments:
+                values: ['pending', 'success', 'failed', 'refunded']
       - name: created_at
         tests:
           - not_null
