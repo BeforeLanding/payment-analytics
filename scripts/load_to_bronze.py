@@ -17,7 +17,12 @@ load_to_bronze.py — 把 scripts/gen_data.py 产出的 CSV 原样导入 DuckDB 
 """
 import argparse
 import duckdb
+import sys
 from pathlib import Path
+
+# 强制 stdout 用 UTF-8（Windows 中文控制台默认 GBK 会乱码）
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 TABLES = {
     "payments": "raw_payments",

@@ -29,6 +29,10 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+# 强制 stdout 用 UTF-8（Windows 中文控制台默认 GBK 会乱码）
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # (国家代码, 国家名, 币种代码, 币种名, 对 USD 汇率)
 COUNTRY_CURRENCY = [
     ("US", "United States",  "USD", "US Dollar",          1.0),
