@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: silver_payments
+    description: >
+      DWD 清洗层支付流水。去重（payment_id 保留最早一条）、类型统一、
+      空值处理（country→ZZ / amount→0）、状态归一化为 4 个枚举值、时间乱序修复。
+      清洗量见 marts.data_quality_audit。
+    columns:
+      - name: payment_id
+        tests:
+          - unique
+          - not_null
+      - name: amount
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['pending', 'success', 'failed', 'refunded']
+      - name: created_at
+        tests:
+          - not_null

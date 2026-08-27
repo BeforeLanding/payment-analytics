@@ -1,0 +1,22 @@
+# 数据库文件（随时可重建）
+*.duckdb
+*.duckdb.wal
+
+# 原始 CSV（由 scripts/gen_data.py 重建）
+data/
+
+# dbt 产物
+target/
+dbt_packages/
+logs/
+profiles/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 编辑器
+.vscode/
+.idea/

@@ -1,0 +1,38 @@
+name: 'payment_analytics'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'payment_analytics'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  # 汇率口径说明：为简化演示，本期使用"近3个月内最后一次可见汇率"作为固定汇率
+  #（替代按日汇率）。具体见 README「指标口径」章节。
+  currency_rate_strategy: 'latest'
+
+models:
+  payment_analytics:
+    bronze:
+      +schema: bronze
+      +materialized: view
+    silver:
+      +schema: silver
+      +materialized: table
+    gold:
+      +schema: gold
+      +materialized: table
+    marts:
+      +schema: marts
+      +materialized: table
+

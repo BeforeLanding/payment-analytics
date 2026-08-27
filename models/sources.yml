@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    loader: python  # scripts/gen_data.py + load_to_bronze.py
+    tables:
+      - name: raw_payments
+      - name: raw_users
+      - name: raw_merchants
+      - name: raw_currencies
+      - name: raw_currency_rates

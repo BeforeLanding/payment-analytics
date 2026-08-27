@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: daily_kpi
+    description: 日粒度核心指标 + 环比（lag 窗口函数）
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
+      - name: gmv_usd
+        tests: [not_null]
+      - name: success_rate
+        tests:
+          - not_null
+
+  - name: daily_payment_summary
+    description: 日×国家×币种支付汇总（指标口径见 README 指标字典）
+    columns:
+      - name: total_payments
+        tests: [not_null]

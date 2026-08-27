@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: dim_user
+    description: 用户维度（粒度：每用户一行，SCD1）
+    columns:
+      - name: user_key
+        tests: [unique, not_null]
+      - name: user_id
+        tests: [unique, not_null]
+      - name: country_code
+        tests: [not_null]
+
+  - name: dim_merchant
+    description: 商户维度（粒度：每商户一行）
+    columns:
+      - name: merchant_key
+        tests: [unique, not_null]
+      - name: merchant_id
+        tests: [unique, not_null]
+
+  - name: dim_date
+    description: 日期维度（粒度：每天一行，generate_series 补齐）
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+      - name: date_day
+        tests: [unique, not_null]
+
+  - name: dim_currency
+    description: 币种维度（粒度：每币种一行；固定汇率口径见 README）
+    columns:
+      - name: currency_key
+        tests: [unique, not_null]
+      - name: currency_code
+        tests: [unique, not_null]
+      - name: to_usd_rate
+        tests:
+          - not_null
+
+  - name: fct_payments
+    description: >
+      支付事实表（粒度：一笔支付单一行；退款为独立 status='refunded' 行）。
+      金额双存：amount（原币）+ amount_usd（固定汇率换算）。
+    columns:
+      - name: payment_key
+        tests: [unique, not_null]
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: amount
+        tests: [not_null]
+      - name: amount_usd
+        tests: [not_null]
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['pending', 'success', 'failed', 'refunded']
+      - name: user_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_user')
+              field: user_key
+      - name: merchant_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_merchant')
+              field: merchant_key
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: currency_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_currency')
+              field: currency_key
+      - name: country_code
+        tests: [not_null]
+      - name: created_at
+        tests: [not_null]
